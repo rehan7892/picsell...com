@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)file:///C:/Users/Rehan/Desktop/try.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeSphere | 3D Developer Portfolio</title>
+    <link href="./rehan_files/css2" rel="stylesheet">
+    <script src="./rehan_files/three.min.js.download"></script>
+    <script src="./rehan_files/vanta.net.min.js.download"></script>
+    <style>
+        :root {
+            --primary: #00ffaa;
+            --secondary: #0088ff;
+            --dark: #0a0a14;
+            --darker: #050510;
+            --light: #f0f0ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Source Code Pro', monospace;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        #vanta-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 170, 0.2);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 2px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+        }
+        
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--darker);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0, 255, 170, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 255, 170, 0.4);
+        }
+        
+        .hero-cube {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 400px;
+        }
+        
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .skill-card {
+            background: rgba(10, 10, 20, 0.7);
+            border: 1px solid rgba(0, 255, 170, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.1);
+            border-color: rgba(0, 255, 170, 0.3);
+        }
+        
+        .skill-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .project-card {
+            background: rgba(10, 10, 20, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 170, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 255, 170, 0.2);
+            border-color: rgba(0, 255, 170, 0.3);
+        }
+        
+        .project-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--darker), var(--dark));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image .webgl-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .project-info {
+            padding: 25px;
+        }
+        
+        .project-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .project-info p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(10, 10, 20, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 170, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(0, 255, 170, 0.2);
+            border-radius: 5px;
+            color: var(--light);
+            font-family: 'Source Code Pro', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(0, 255, 170, 0.2);
+            margin-top: 100px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 255, 170, 0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--darker);
+            transform: translateY(-3px);
+        }
+        
+        /* 3D Elements */
+        .floating-cube {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            pointer-events: none;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-cube {
+                display: none;
+            }
+            
+            .hero {
+                height: auto;
+                padding: 100px 0;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            section {
+                padding: 70px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="vanta-bg"><canvas class="vanta-canvas" width="1176" height="962" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1307px; height: 1069px;"></canvas><canvas class="vanta-canvas" width="1176" height="962" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1307px; height: 1069px;"></canvas><canvas class="vanta-canvas" width="1176" height="962" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1307px; height: 1069px;"></canvas><canvas class="vanta-canvas" width="1176" height="962" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1307px; height: 1069px;"></canvas><canvas class="vanta-canvas" width="1176" height="962" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1176px; height: 962px;"></canvas><canvas class="vanta-canvas" width="1176" height="962" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1307px; height: 1069px;"></canvas><canvas class="vanta-canvas" width="2306" height="1784" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1153px; height: 892px;"></canvas><canvas class="vanta-canvas" width="2306" height="1784" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1153px; height: 892px;"></canvas><canvas class="vanta-canvas" width="2306" height="1784" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1153px; height: 892px;"></canvas><canvas class="vanta-canvas" width="2198" height="1784" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1099px; height: 892px;"></canvas><canvas class="vanta-canvas" width="1084" height="892" style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 1084px; height: 892px;"></canvas></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">VirtualVibes </div>
+            <nav>
+                <ul>
+                    <li><a href="file:///C:/Users/Rehan/Desktop/rehan.html#home">Home</a></li>
+                    <li><a href="file:///C:/Users/Rehan/Desktop/rehan.html#skills">Skills</a></li>
+                    <li><a href="file:///C:/Users/Rehan/Desktop/rehan.html#projects">Projects</a></li>
+                    <li><a href="file:///C:/Users/Rehan/Desktop/rehan.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Give Yours Dreams a Shape of Reality</h1>
+                <p>I'm a full time web developer..specializing in creating immersive 3D web experiences and high-performance applicationslike&gt;&gt;&gt;With a passion for clean code and innovative solutions.</p>
+                <a href="https://www.instagram.com/rehan240906?igsh=eGtvNzBpbHlrMWVq" class="btn">Get In Touch</a>
+            </div>
+            <div class="hero-cube">
+                <!-- This would be replaced with an actual 3D model using Three.js -->
+                <div id="hero-cube-3d" style="width: 100%; height: 100%;"><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas><canvas width="400" height="400" style="display: block; width: 400px; height: 400px;"></canvas></div>
+            </div>
+        </section>
+        
+        <section id="skills">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card floating">
+                    <h3>Photoshop</h3>
+                    <p>Adobe Photoshop is a versatile software used for image editing, graphic design, and digital art creation</p>
+                </div>
+                <div class="skill-card floating" style="animation-delay: 0.5s;">
+                    <h3>SketchupPro</h3>
+                    <p>SketchUp is a proprietary 3D modeling software that is used to create and manipulate 3D models. It is used in architecture and interior design</p>
+                </div>
+                <div class="skill-card floating" style="animation-delay: 1s;">
+                    <h3>AI Content Creator</h3>
+                    <p>AI content refers to any kind of digital content (text, audio, video, images) created or generated using artificial intelligence (AI) algorithms and models.</p>
+                </div>
+                
+
+
+
+
+                <div class="skill-card floating" style="animation-delay: 1.5s;">
+                    <h3>After Effects</h3>
+                    <p>"Adobe Premiere Pro is a professional-grade, timeline-based video editing software used for creating and editing videos for film, television, and online content"</p>
+                </div>
+
+
+
+                <div class="skill-card floating" style="animation-delay: 1.5s;">
+                    <h3>HTML Coding</h3>
+                    <p>HTML (HyperText Markup Language) is a markup language used to structure web pages and content for display in a web browser.</p>
+                </div><div class="skill-card floating" style="animation-delay: 1.5s;">
+                    <h3>Premiere Pro</h3>
+                    <p>Adobe Premiere Pro is a professional-grade, timeline-based video editing software used for creating and editing videos for film, television, and online content</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-image">
+                        <!-- 3D project preview would go here -->
+                        <div class="webgl-container" id="project1-3d"><img src="./rehan_files/images" "358"="" height="200" style="display: block; width: 358px; height: 200px;"><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="350" height="200" style="display: block; width: 350px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="508" height="200" style="display: block; width: 508px; height: 200px;"></canvas><canvas width="500" height="200" style="display: block; width: 500px; height: 200px;"></canvas></div>
+                    </div>
+                    <div class="project-info">
+                        <h3>SketchupPro</h3>
+                        <p>A customizable 3D portfolio platform with interactive elements and real-time rendering.</p>
+                        <a href="https://www.instagram.com/the_dream__plan?igsh=d2l3dHNrZnJrcXMx" class="btn">View Project</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <!-- 3D project preview would go here -->
+                        <div class="webgl-container" id="project2-3d"><img src="./rehan_files/VsLksth7iQUuss2AVsEFUZ.jpg" "358"="" height="200" style="display: block; width: 358px; height: 200px;"><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="350" height="200" style="display: block; width: 350px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="508" height="200" style="display: block; width: 508px; height: 200px;"></canvas><canvas width="500" height="200" style="display: block; width: 500px; height: 200px;"></canvas></div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Photoshop</h3>
+                        <p>Interactive 3D data visualization tool for complex datasets with WebGL acceleration.</p>
+                        <a href="https://www.instagram.com/designr224?igsh=MTJudDlyc2c4cHRlbg==#" class="btn">View Project</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <!-- 3D project preview would go here -->
+                        <div class="webgl-container" id="project3-3d"><img src="./rehan_files/57f4e66d306cc93c0f79d2fc0bc2814e.jpg" "358"="" height="200" style="display: block; width: 358px; height: 200px;"><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="350" height="200" style="display: block; width: 350px; height: 200px;"></canvas><canvas width="358" height="200" style="display: block; width: 358px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="535" height="200" style="display: block; width: 535px; height: 200px;"></canvas><canvas width="508" height="200" style="display: block; width: 508px; height: 200px;"></canvas><canvas width="500" height="200" style="display: block; width: 500px; height: 200px;"></canvas></div>
+                    </div>
+                    <div class="project-info">
+                        <h3>After Effects</h3>
+                        <p>Browser-based augmented reality framework using WebXR and Three.js.</p>
+                        <a href="https://aedownload.com/" class="btn">View Project</a>
+                    </div>
+                </div>
+
+
+
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <!-- 3D project preview would go here -->
+                        <div class="webgl-container" id="project3-3d"><img src="./rehan_files/AI-Debouge-Tech-scaled.jpeg" "358"="" height="200" style="display: block; width: 358px; height: 200px;"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3>AI Content Creator</h3>
+                        <p>Browser-based augmented reality framework using WebXR and Three.js.</p>
+                        <a href="https://www.aitoolhunt.com/" class="btn">View Project</a>
+                    </div>
+                </div>
+
+
+
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <!-- 3D project preview would go here -->
+                        <div class="webgl-container" id="project3-3d"><img src="./rehan_files/masks-fix-color-cast-premiere-pro.jpg" "358"="" height="200" style="display: block; width: 358px; height: 200px;"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Premire Pro</h3>
+                        <p>Browser-based augmented reality framework using WebXR and Three.js.</p>
+                        <a href="https://www.instagram.com/tahir_hussain1972?igsh=ZHlqeDhidG5vb2di" class="btn">View Project</a>
+                    </div>
+                </div><div class="project-card">
+                    <div class="project-image">
+                        <!-- 3D project preview would go here -->
+                        <div class="webgl-container" id="project3-3d"><img src="./rehan_files/programming-code-abstract-technology-background-600nw-746652751.jpg" "358"="" height="200" style="display: block; width: 358px; height: 200px;"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Html Coding</h3>
+                        <p>Browser-based augmented reality framework using WebXR and Three.js.</p>
+                        <a href="https://www.website.com/free-websites/?source=SC&amp;country=IN" class="btn">View Project</a>
+                    </div>
+                </div>
+
+
+
+                
+            </div>
+        </section>
+        
+        <section id="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            
+        <div class="aling=&quot;center&quot;&quot;contact-info&quot;">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h3>Location</h3>
+                        <p style="color:lightgreen;">Mhahalaxmi puram kota ,,oppsite singhania school </p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h3>Email</h3>
+                        <p style="color: lightgreen;">rehanspssedu@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div>
+                        <h3>Phone</h3>
+                        <p style="color:lightgreen;">(+91)9829766049</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h3>Working Hours</h3>
+                        <p style="color: lightgreen;">24 hours available</p>
+                    </div>
+                </div>
+            </div></section>
+
+
+
+
+        
+        
+        <footer>
+            <div class="social-links">
+                <a href="file:///C:/Users/Rehan/Desktop/rehan.html#"><i class="fab fa-github"></i></a>
+                <a href="file:///C:/Users/Rehan/Desktop/rehan.html#"><i class="fab fa-linkedin"></i></a>
+                <a href="file:///C:/Users/Rehan/Desktop/rehan.html#"><i class="fab fa-twitter"></i></a>
+                <a href="file:///C:/Users/Rehan/Desktop/rehan.html#"><i class="fab fa-codepen"></i></a>
+            </div>
+            <p>© 2023 Virtual Vibes. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <!-- Floating 3D elements -->
+    <div class="floating-cube" style="top: 30%; left: 5%; width: 94.9537px; height: 94.9537px;"><canvas width="83" height="83" style="display: block; width: 83.102px; height: 83.102px;"></canvas><canvas width="56" height="56" style="display: block; width: 56.0141px; height: 56.0141px;"></canvas><canvas width="85" height="85" style="display: block; width: 85.589px; height: 85.589px;"></canvas><canvas width="95" height="95" style="display: block; width: 95.7662px; height: 95.7662px;"></canvas><canvas width="89" height="89" style="display: block; width: 89.1909px; height: 89.1909px;"></canvas><canvas width="51" height="51" style="display: block; width: 51.1154px; height: 51.1154px;"></canvas><canvas width="96" height="96" style="display: block; width: 96.6199px; height: 96.6199px;"></canvas><canvas width="86" height="86" style="display: block; width: 86.9169px; height: 86.9169px;"></canvas><canvas width="58" height="58" style="display: block; width: 58.624px; height: 58.624px;"></canvas><canvas width="85" height="85" style="display: block; width: 85.3426px; height: 85.3426px;"></canvas><canvas width="94" height="94" style="display: block; width: 94.9537px; height: 94.9537px;"></canvas></div>
+    <div class="floating-cube" style="top: 70%; left: 10%; animation-delay: 1s; width: 50.8268px; height: 50.8268px;"><canvas width="96" height="96" style="display: block; width: 96.9005px; height: 96.9005px;"></canvas><canvas width="53" height="53" style="display: block; width: 53.5297px; height: 53.5297px;"></canvas><canvas width="80" height="80" style="display: block; width: 80.1299px; height: 80.1299px;"></canvas><canvas width="69" height="69" style="display: block; width: 69.0514px; height: 69.0514px;"></canvas><canvas width="99" height="99" style="display: block; width: 99.077px; height: 99.077px;"></canvas><canvas width="53" height="53" style="display: block; width: 53.1717px; height: 53.1717px;"></canvas><canvas width="91" height="91" style="display: block; width: 91.3901px; height: 91.3901px;"></canvas><canvas width="53" height="53" style="display: block; width: 53.4196px; height: 53.4196px;"></canvas><canvas width="95" height="95" style="display: block; width: 95.2248px; height: 95.2248px;"></canvas><canvas width="88" height="88" style="display: block; width: 88.56px; height: 88.56px;"></canvas><canvas width="50" height="50" style="display: block; width: 50.8268px; height: 50.8268px;"></canvas></div>
+    <div class="floating-cube" style="top: 20%; right: 8%; animation-delay: 1.5s; width: 59.4408px; height: 59.4408px;"><canvas width="51" height="51" style="display: block; width: 51.3799px; height: 51.3799px;"></canvas><canvas width="64" height="64" style="display: block; width: 64.6061px; height: 64.6061px;"></canvas><canvas width="86" height="86" style="display: block; width: 86.8391px; height: 86.8391px;"></canvas><canvas width="76" height="76" style="display: block; width: 76.0404px; height: 76.0404px;"></canvas><canvas width="88" height="88" style="display: block; width: 88.8368px; height: 88.8368px;"></canvas><canvas width="70" height="70" style="display: block; width: 70.8316px; height: 70.8316px;"></canvas><canvas width="94" height="94" style="display: block; width: 94.9202px; height: 94.9202px;"></canvas><canvas width="97" height="97" style="display: block; width: 97.8961px; height: 97.8961px;"></canvas><canvas width="60" height="60" style="display: block; width: 60.256px; height: 60.256px;"></canvas><canvas width="89" height="89" style="display: block; width: 89.6123px; height: 89.6123px;"></canvas><canvas width="59" height="59" style="display: block; width: 59.4408px; height: 59.4408px;"></canvas></div>
+    <div class="floating-cube" style="bottom: 15%; right: 5%; animation-delay: 2s; width: 52.5636px; height: 52.5636px;"><canvas width="97" height="97" style="display: block; width: 97.8608px; height: 97.8608px;"></canvas><canvas width="93" height="93" style="display: block; width: 93.9784px; height: 93.9784px;"></canvas><canvas width="54" height="54" style="display: block; width: 54.818px; height: 54.818px;"></canvas><canvas width="54" height="54" style="display: block; width: 54.4112px; height: 54.4112px;"></canvas><canvas width="55" height="55" style="display: block; width: 55.6197px; height: 55.6197px;"></canvas><canvas width="51" height="51" style="display: block; width: 51.1454px; height: 51.1454px;"></canvas><canvas width="63" height="63" style="display: block; width: 63.3091px; height: 63.3091px;"></canvas><canvas width="55" height="55" style="display: block; width: 55.2333px; height: 55.2333px;"></canvas><canvas width="61" height="61" style="display: block; width: 61.0369px; height: 61.0369px;"></canvas><canvas width="58" height="58" style="display: block; width: 58.4668px; height: 58.4668px;"></canvas><canvas width="52" height="52" style="display: block; width: 52.5636px; height: 52.5636px;"></canvas></div>
+    
+    <script src="file:///C:/Users/Rehan/Desktop/rehan_files/a076d05399.js.download" crossorigin="anonymous"></script>
+    <script>
+        // Initialize Vanta.js background
+        VANTA.NET({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x00ffaa,
+            backgroundColor: 0x0a0a14,
+            points: 12.00,
+            maxDistance: 22.00,
+            spacing: 18.00
+        });
+        
+        // Initialize Three.js cubes for hero and projects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hero cube
+            const heroCubeContainer = document.getElementById('hero-cube-3d');
+            if (heroCubeContainer) {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                
+                renderer.setSize(heroCubeContainer.clientWidth, heroCubeContainer.clientHeight);
+                heroCubeContainer.appendChild(renderer.domElement);
+                
+                const geometry = new THREE.BoxGeometry(2, 2, 2);
+                const edges = new THREE.EdgesGeometry(geometry);
+                const line = new THREE.LineSegments(
+                    edges,
+                    new THREE.LineBasicMaterial({ color: 0x00ffaa, linewidth: 2 })
+                );
+                
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0x050510,
+                    transparent: true,
+                    opacity: 0.5,
+                    wireframe: false
+                });
+                
+                const cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
+                scene.add(line);
+                
+                camera.position.z = 5;
+                
+                function animate() {
+                    requestAnimationFrame(animate);
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    line.rotation.x += 0.01;
+                    line.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                
+                animate();
+                
+                window.addEventListener('resize', function() {
+                    camera.aspect = heroCubeContainer.clientWidth / heroCubeContainer.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(heroCubeContainer.clientWidth, heroCubeContainer.clientHeight);
+                });
+            }
+            
+            // Initialize similar 3D elements for project cards
+            ['project1-3d', 'project2-3d', 'project3-3d'].forEach(id => {
+                const container = document.getElementById(id);
+                if (container) {
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                    
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                    container.appendChild(renderer.domElement);
+                    
+                    // Different shapes for different projects
+                    let geometry;
+                    if (id === 'project1-3d') {
+                        geometry = new THREE.IcosahedronGeometry(1.5, 0);
+                    } else if (id === 'project2-3d') {
+                        geometry = new THREE.TorusKnotGeometry(1.3, 0.4, 100, 16);
+                    } else {
+                        geometry = new THREE.OctahedronGeometry(1.5, 0);
+                    }
+                    
+                    const edges = new THREE.EdgesGeometry(geometry);
+                    const line = new THREE.LineSegments(
+                        edges,
+                        new THREE.LineBasicMaterial({ color: 0x0088ff, linewidth: 1 })
+                    );
+                    
+                    const material = new THREE.MeshBasicMaterial({ 
+                        color: 0x050510,
+                        transparent: true,
+                        opacity: 0.3,
+                        wireframe: false
+                    });
+                    
+                    const shape = new THREE.Mesh(geometry, material);
+                    scene.add(shape);
+                    scene.add(line);
+                    
+                    camera.position.z = 3;
+                    
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        shape.rotation.x += 0.005;
+                        shape.rotation.y += 0.005;
+                        line.rotation.x += 0.005;
+                        line.rotation.y += 0.005;
+                        renderer.render(scene, camera);
+                    }
+                    
+                    animate();
+                    
+                    window.addEventListener('resize', function() {
+                        camera.aspect = container.clientWidth / container.clientHeight;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(container.clientWidth, container.clientHeight);
+                    });
+                }
+            });
+            
+            // Initialize floating cubes
+            document.querySelectorAll('.floating-cube').forEach((cube, index) => {
+                const size = 50 + Math.random() * 50;
+                cube.style.width = `${size}px`;
+                cube.style.height = `${size}px`;
+                
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                
+                renderer.setSize(size, size);
+                cube.appendChild(renderer.domElement);
+                
+                const geometry = new THREE.BoxGeometry(1, 1, 1);
+                const edges = new THREE.EdgesGeometry(geometry);
+                const line = new THREE.LineSegments(
+                    edges,
+                    new THREE.LineBasicMaterial({ color: 0x00ffaa, linewidth: 1 })
+                );
+                
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0x050510,
+                    transparent: true,
+                    opacity: 0.2,
+                    wireframe: false
+                });
+                
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
+                scene.add(line);
+                
+                camera.position.z = 2;
+                
+                function animate() {
+                    requestAnimationFrame(animate);
+                    mesh.rotation.x += 0.01;
+                    mesh.rotation.y += 0.01;
+                    line.rotation.x += 0.01;
+                    line.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                
+                animate();
+            });
+        });
+    </script>
+
+</body></html>
